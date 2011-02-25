@@ -1,0 +1,88 @@
+#! /bin/sh
+
+#---------------------------------------------------------------------
+#                              bootstrap                              
+# 
+# This will be called by the template bootstrap function, which is
+# itself called by fw-bootstrap, which is in turn invoked by the
+# bootstrap executable deposited at the top of the source project.
+# It is intended for running any setup activity required prior to
+# building.
+#---------------------------------------------------------------------
+
+#---------------------------------------------------------------------
+#                           chicken and egg                           
+#---------------------------------------------------------------------
+
+test -f "${FW_ROOT}/share/fw/sh/fw-find.sh" && fws="${FW_ROOT}/share/fw/sh/fw-find.sh"
+test -f "fw/sh/fw-find.sh" && fws="fw/sh/fw-find.sh"
+test -f "fw.local/sh/fw-find.sh" && fws="fw.local/sh/fw-find.sh"
+test ! -z "$fws" || {
+  echo "erlang-rebar/bootstrap: fatal: can't locate fw-find.sh" 1>&2
+  exit 1
+}
+
+. "$fws"
+
+#---------------------------------------------------------------------
+#                              routines                               
+#---------------------------------------------------------------------
+
+fw_source "erlang-rebar/bootstrap" "sh/bootstrap-util.sh"
+fw_source "erlang-rebar/bootstrap" "sh/fatal.sh"
+fw_source "erlang-rebar/bootstrap" "sh/fw-exec.sh"
+fw_source "erlang-rebar/bootstrap" "sh/parse-args.sh"
+fw_source "erlang-rebar/bootstrap" "sh/validate-args.sh"
+
+#---------------------------------------------------------------------
+#                                main                                 
+#---------------------------------------------------------------------
+
+parse_args "erlang-rebar/bootstrap" "$@"
+
+validate_args "erlang-rebar/bootstrap" "revision" ""
+
+eval `fw-exec "template/erlang-rebar/load-config"`
+
+if test -n "$FW_WRAP_GITPATH" ; then
+  # first update or clone from git
+  if test -d $FW_WRAP_GITNAME; then
+    (cd $FW_WRAP_GITNAME; git pull)
+  else
+    git clone $FW_WRAP_GITPATH $FW_WRAP_GITNAME
+  fi
+
+  # update to a tag if it's set
+  if test -n "$FW_WRAP_GITTAG" ; then
+    (cd $FW_WRAP_GITNAME && git checkout $FW_WRAP_GITTAG) \
+      || fatal "erlang-rebar/bootstrap"
+  fi
+
+  # link in any possible rebar files
+  for f in c_src ebin include priv src "test" "rebar.config" ; do
+    if test ! -d $f -a ! -h $f -a ! -f $f
+      then
+        if test -d "$FW_WRAP_GITNAME/$f" -o -f "$FW_WRAP_GITNAME/$f"
+          then
+            ln -sf "$FW_WRAP_GITNAME/$f" . \
+            || fatal "erlang-rebar/bootstrap"
+          fi
+      fi
+  done
+fi
+
+for dir in .
+  do
+    for x in Makefile_dot_am \
+             configure.ac
+      do
+        target=`echo "$x" | perl -pe 's/_dot_am/.am/;'`
+
+        bootstrap_link_optional "template/erlang-rebar/$dir/$x"       \
+                                "$dir"                                \
+                                "$target"                       \
+        || fatal "erlang-rebar/bootstrap"
+      done
+  done
+
+fw_exec "build/automake/bootstrap" "$@"

@@ -1,0 +1,14 @@
+# put whatever (auto)make commands here, they will be included from Makefile.am
+SUBDIRS += src
+
+dist_template_DATA = 			\
+  Makefile_dot_am			\
+  configure.ac \
+  rebar.config
+
+dist_template_SCRIPTS += \
+  make-app-file \
+  fwte-makeappfile \
+  make-post-install \
+  make-pre-remove \
+  make-post-remove
