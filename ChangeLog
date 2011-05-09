@@ -1,0 +1,7 @@
+Version 0.0.1 (molinaro)
+  * copy c_src verbatim, sometimes there's depth there
+  * allow dialyzer to be skipped
+
+Version 0.0.0 (molinaro)
+  * initial version, works for some things, not others, but at least it mostly
+  works
