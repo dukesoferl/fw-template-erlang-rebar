@@ -13,7 +13,7 @@ erldocdir="@ERLDOCDIR@"
 dist_erlappsrc_DATA = $(wildcard src/*.erl) $(wildcard src/*.hrl)
 dist_erlappebin_DATA = $(wildcard ebin/*.beam) $(wildcard ebin/*.app)
 dist_erlappinclude_DATA = $(wildcard include/*.hrl)
-dist_erlappcsrc_DATA = $(wildcard c_src/*.c) $(wildcard c_src/*.h)
+dist_erlappcsrc_DATA = $(shell if test -d c_src -o -h c_src ; then find c_src -follow -type f ; fi)
 dist_erlapppriv_DATA = $(shell if test -d priv -o -h priv ; then find priv -follow -type f ; fi)
 
 rebar:
@@ -24,7 +24,7 @@ all: .generated_app_file rebar
 	./rebar $(REBAR_OPTS) compile
 
 check: rebar
-	./rebar $(REBAR_OPTS) dialyze
+	if test -z "$(NO_DIALYZE)" ; then ./rebar $(REBAR_OPTS) dialyze ; fi
 	./rebar $(REBAR_OPTS) eunit
 
 clean: rebar
