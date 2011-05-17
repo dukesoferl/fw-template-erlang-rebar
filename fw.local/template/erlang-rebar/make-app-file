@@ -71,6 +71,11 @@ if test -f "src/${FW_ERL_APP_NAME}.app.src" ; then
   exit 0
 fi
 
+if test -f src/*.app.src ; then
+  echo "WARNING: app file exists but has a different name than '${FW_ERL_APP_NAME}'"
+  exit 0
+fi
+
 tmpdir=make_app_file_$$
 rm -rf "$tmpdir"
 

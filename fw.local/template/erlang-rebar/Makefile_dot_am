@@ -17,15 +17,14 @@ dist_erlappcsrc_DATA = $(shell if test -d c_src -o -h c_src ; then find c_src -f
 dist_erlapppriv_DATA = $(shell if test -d priv -o -h priv ; then find priv -follow -type f ; fi)
 
 rebar:
-	echo "rebar is $(REBAR)"
-	ln -sf $(REBAR) rebar
+	@ln -sf $(REBAR) rebar
 
 all: .generated_app_file rebar
 	./rebar $(REBAR_OPTS) compile
 
 check: rebar
 	if test -z "$(NO_DIALYZE)" ; then ./rebar $(REBAR_OPTS) dialyze ; fi
-	./rebar $(REBAR_OPTS) eunit
+	if test -z "$(NO_EUNIT)" ; then ./rebar $(REBAR_OPTS) eunit ; fi
 
 clean: rebar
 	./rebar $(REBAR_OPTS) clean
@@ -56,3 +55,13 @@ endif
 				fi;                                              \
 			fw-exec template/erlang-rebar/make-app-file --top "`pwd`"; \
 	} && touch .generated_app_file
+
+maintainer-clean-local::
+	@rm -f .generated_app_file
+	@rm -rf .eunit
+	if test -n "$(FW_WRAP_GITNAME)" ; then rm -rf $(FW_WRAP_GITNAME) ; fi
+	for f in ebin include priv rebar rebar.config c_src src test ; do \
+	  if test -L $$f ; then \
+	    rm -f $$f ; \
+	  fi ; \
+	done
