@@ -1,0 +1,14 @@
+Version 0.0.2 (molinaro)
+  * add maintainer-clean which removes all symlinks and the origin checkout
+  * better checks before building .app file
+  * NO_DIALZYER and NO_EUNIT now control whether to turn off dialyzer or eunit
+    with make check (these can be set to anything in the Makefile.am.local in
+    the root of a project).
+
+Version 0.0.1 (molinaro)
+  * copy c_src verbatim, sometimes there's depth there
+  * allow dialyzer to be skipped
+
+Version 0.0.0 (molinaro)
+  * initial version, works for some things, not others, but at least it mostly
+  works
