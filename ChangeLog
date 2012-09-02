@@ -1,3 +1,6 @@
+Version 0.1.0 (molinaro)
+  * add dialyzer support to make check when rebar doesn't support dialyzer
+
 Version 0.0.2 (molinaro)
   * add maintainer-clean which removes all symlinks and the origin checkout
   * better checks before building .app file

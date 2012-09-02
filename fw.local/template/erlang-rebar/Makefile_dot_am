@@ -16,6 +16,8 @@ dist_erlappinclude_DATA = $(wildcard include/*.hrl)
 dist_erlappcsrc_DATA = $(shell if test -d c_src -o -h c_src ; then find c_src -follow -type f ; fi)
 dist_erlapppriv_DATA = $(shell if test -d priv -o -h priv ; then find priv -follow -type f ; fi)
 
+DIALYZERFLAGS := -I include/ $(DIALYZERFLAGS) 
+
 rebar:
 	@ln -sf $(REBAR) rebar
 
@@ -23,7 +25,13 @@ all: .generated_app_file rebar
 	./rebar $(REBAR_OPTS) compile
 
 check: rebar
-	if test -z "$(NO_DIALYZE)" ; then ./rebar $(REBAR_OPTS) dialyze ; fi
+	@if test -z "$(NO_DIALYZE)" ; then \
+	  if test -z "$(SUPPORT_DIALYZE)" ; then \
+	    ./rebar $(REBAR_OPTS) dialyze ; \
+	  else \
+	    dialyzer $(DIALYZERFLAGS) --src -c src ; \
+	  fi ; \
+	fi ; \
 	if test -z "$(NO_EUNIT)" ; then ./rebar $(REBAR_OPTS) eunit ; fi
 
 clean: rebar

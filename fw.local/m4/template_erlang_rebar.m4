@@ -52,15 +52,26 @@ AC_DEFUN([FW_TEMPLATE_ERLANG_REBAR],
 
   AC_ARG_VAR(ERLC, [erlang compiler])
 
-  AC_PATH_PROG([REBAR], [rebar])
+  AC_MSG_CHECKING([looking for rebar])
 
+  AC_PATH_PROG([REBAR], [rebar], ,[.:$PATH])
   if test "x$REBAR" = x
-    then
-      AC_MSG_ERROR([cant find rebar])
-      exit 1
+  then
+    AC_MSG_ERROR([cant find rebar])
+    exit 1
     fi
+    AC_ARG_VAR(REBAR, [rebar build tool])
+  AC_SUBST([REBAR])
 
-  AC_ARG_VAR(REBAR, [rebar build tool])
+  AC_MSG_CHECKING([rebar supports dialyzer])
+
+  if $REBAR dialyze > /dev/null ; then
+    AC_MSG_RESULT([yes])
+  else
+    SUPPORT_DIALYZE=1
+    AC_MSG_RESULT([no])
+  fi
+  AC_SUBST([SUPPORT_DIALYZE])
 
   FW_SUBST_PROTECT([FW_EDOC_OPTIONS])
   FW_SUBST_PROTECT([FW_LEEX_OPTIONS])
