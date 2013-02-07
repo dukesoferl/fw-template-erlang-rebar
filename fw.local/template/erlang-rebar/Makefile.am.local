@@ -12,3 +12,7 @@ dist_template_SCRIPTS += \
   make-post-install \
   make-pre-remove \
   make-post-remove
+
+.PHONY: check-script-escript-%
+check-script-escript-%:
+	escript -s $*

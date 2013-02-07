@@ -1,3 +1,7 @@
+Version 0.2.0 (molinaro)
+  * check escripts to remove warning
+  * actually include rebar as a dependency
+
 Version 0.1.1 (molinaro)
   * track a fix from fw-template-erlang for debian systems
 
