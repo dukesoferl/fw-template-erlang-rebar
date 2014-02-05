@@ -2,10 +2,10 @@ include $(top_srcdir)/fw/build/automake/Makefile_dot_am
 
 REBAR_OPTS="skip_deps=true"
 erlappdir="@ERLAPPDIR@"
-erlappcsrcdir="$(erlappdir)/c_src"
+erlappcsrcdir="$(erlappdir)"
 erlappsrcdir="$(erlappdir)/src"
 erlappebindir="$(erlappdir)/ebin"
-erlappprivdir="$(erlappdir)/priv"
+erlappprivdir="$(erlappdir)"
 erlappincludedir="$(erlappdir)/include"
 erlapptestdir="$(erlappdir)/test"
 erldocdir="@ERLDOCDIR@"
@@ -13,8 +13,8 @@ erldocdir="@ERLDOCDIR@"
 dist_erlappsrc_DATA = $(wildcard src/*.erl) $(wildcard src/*.hrl)
 dist_erlappebin_DATA = $(wildcard ebin/*.beam) $(wildcard ebin/*.app)
 dist_erlappinclude_DATA = $(wildcard include/*.hrl)
-dist_erlappcsrc_DATA = $(shell if test -d c_src -o -h c_src ; then find c_src -follow -type f ; fi)
-dist_erlapppriv_DATA = $(shell if test -d priv -o -h priv ; then find priv -follow -type f ; fi)
+nobase_dist_erlappcsrc_DATA = $(shell if test -d c_src -o -h c_src ; then find c_src -follow -type f ; fi)
+nobase_dist_erlapppriv_DATA = $(shell if test -d priv -o -h priv ; then find priv -follow -type f ; fi)
 
 DIALYZERFLAGS := -I include/ $(DIALYZERFLAGS) 
 
@@ -73,3 +73,4 @@ maintainer-clean-local::
 	    rm -f $$f ; \
 	  fi ; \
 	done
+	@if test -d ebin ; then rm -rf ebin ; fi

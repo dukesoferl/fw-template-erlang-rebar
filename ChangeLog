@@ -1,3 +1,7 @@
+Version 0.3.0 (molinaro)
+  * recursively add priv and c_src directories
+  * remove ebin directory during make maintainer-clean
+
 Version 0.2.0 (molinaro)
   * check escripts to remove warning
   * actually include rebar as a dependency
