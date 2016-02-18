@@ -58,7 +58,7 @@ perl -pi -e 's/^.*fw-template-erlang-rebar.*$//g' fw/template/erlang-rebar/load-
 
 if test "@FW_NATIVE_PACKAGE_TYPE@" != none
   then
-    "${MAKE}" "package-@FW_NATIVE_PACKAGE_TYPE@" || exit 1
+    FW_POST_RELEASE_COMMANDS="true" "${MAKE}" "package-@FW_NATIVE_PACKAGE_TYPE@" || exit 1
   fi
 
 "${MAKE}" -s maintainer-clean
