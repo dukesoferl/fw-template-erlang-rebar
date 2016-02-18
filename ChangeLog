@@ -1,3 +1,6 @@
+Version 0.3.3 (molinaro)
+  * dependency on rebar back and I believe appropriately set
+
 Version 0.3.2 (molinaro)
   * hard dependency on rebar is not working at the moment, so removing it
 
