@@ -1,3 +1,6 @@
+Version 0.3.1 (molinaro)
+  * build deps seem off
+
 Version 0.3.0 (molinaro)
   * recursively add priv and c_src directories
   * remove ebin directory during make maintainer-clean
