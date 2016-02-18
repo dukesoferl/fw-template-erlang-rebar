@@ -2,7 +2,7 @@
 # variable FW_PACKAGE_DEFAULT_MAINTAINER if non-empty at init time
 
 FW_PACKAGE_NAME="fw-template-erlang-rebar"
-FW_PACKAGE_VERSION="0.3.1"
+FW_PACKAGE_VERSION="0.3.2"
 FW_PACKAGE_MAINTAINER="Anthony Molinaro <anthonym@alumni.caltech.edu>"
 FW_PACKAGE_SHORT_DESCRIPTION="Erlang template for framewerk which uses rebar to build."
 FW_PACKAGE_DESCRIPTION="`cat README`"
@@ -14,13 +14,13 @@ FW_PACKAGE_ARCHITECTURE_DEPENDENT="0"
 # 
 # For other packaging systems, the syntax is translated for you.
 
-FW_PACKAGE_DEPENDS="framewerk (>= 0.1.33), erlang | erlang-otp, rebar | erlang-rebar"
+FW_PACKAGE_DEPENDS="framewerk (>= 0.1.33), erlang | erlang-otp"
 FW_PACKAGE_CONFLICTS=""
 FW_PACKAGE_PROVIDES=""
 FW_PACKAGE_REPLACES=""
 FW_PACKAGE_SUGGESTS=""
 
-FW_PACKAGE_BUILD_DEPENDS="erlang | erlang-otp, rebar | erlang-rebar"
+FW_PACKAGE_BUILD_DEPENDS="erlang | erlang-otp"
 FW_PACKAGE_BUILD_CONFLICTS=""
 
 # dupload is used for submitting debian packages to a package archive

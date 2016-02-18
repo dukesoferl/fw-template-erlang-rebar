@@ -1,3 +1,6 @@
+Version 0.3.2 (molinaro)
+  * hard dependency on rebar is not working at the moment, so removing it
+
 Version 0.3.1 (molinaro)
   * build deps seem off
 
