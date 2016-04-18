@@ -1,0 +1,7 @@
+%% -*- mode: erlang;erlang-indent-level: 2;indent-tabs-mode: nil -*-
+%% ex: ts=2 sw=2 ft=erlang et
+
+case os:getenv("FW_REBAR_BUILD") of
+  "1" -> lists:keyreplace(deps,1, CONFIG, {deps, []});
+  _ -> CONFIG
+end.

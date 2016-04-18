@@ -22,20 +22,22 @@ rebar:
 	@ln -sf $(REBAR) rebar
 
 all: .generated_app_file rebar
-	./rebar $(REBAR_OPTS) compile
+	FW_REBAR_BUILD=1 ./rebar $(REBAR_OPTS) compile
 
 check: rebar
 	@if test -z "$(NO_DIALYZE)" ; then \
 	  if test -z "$(SUPPORT_DIALYZE)" ; then \
-	    ./rebar $(REBAR_OPTS) dialyze ; \
+	    FW_REBAR_BUILD=1 ./rebar $(REBAR_OPTS) dialyze ; \
 	  else \
 	    dialyzer $(DIALYZERFLAGS) --src -c src ; \
 	  fi ; \
 	fi ; \
-	if test -z "$(NO_EUNIT)" ; then ./rebar $(REBAR_OPTS) eunit ; fi
+	if test -z "$(NO_EUNIT)" ; then \
+	  FW_REBAR_BUILD=1 ./rebar $(REBAR_OPTS) eunit ; \
+	fi
 
 clean: rebar
-	./rebar $(REBAR_OPTS) clean
+	FW_REBAR_BUILD=1 ./rebar $(REBAR_OPTS) clean
 
 EXTRA_DIST += \
   $(dist_erlappinclude_DATA) \
@@ -43,12 +45,16 @@ EXTRA_DIST += \
   $(dist_erlappcsrc_DATA) \
   $(dist_erlappebin_DATA) \
   rebar \
-  rebar.config
+  rebar.config \
+  rebar.config.script
 
 if FW_ERLANG_WANT_ERLRC
 install-data-hook::
 	mkdir -p "${DESTDIR}@ERLRCDIR@/applications"
 	touch "${DESTDIR}@ERLRCDIR@/applications/@FW_ERL_APP_NAME@"
+else
+install-data-hook::
+
 endif
 
 .generated_app_file: $(wildcard src/*.erl) $(wildcard src/*.hrl) $(wildcard include/*.hrl)
@@ -68,7 +74,7 @@ maintainer-clean-local::
 	@rm -f .generated_app_file
 	@rm -rf .eunit
 	if test -n "$(FW_WRAP_GITNAME)" ; then rm -rf $(FW_WRAP_GITNAME) ; fi
-	for f in ebin include priv rebar rebar.config c_src src test ; do \
+	for f in ebin include priv rebar rebar.config rebar.config.script c_src src test ; do \
 	  if test -L $$f ; then \
 	    rm -f $$f ; \
 	  fi ; \

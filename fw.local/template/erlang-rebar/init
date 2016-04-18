@@ -54,14 +54,14 @@ validate_args "erlang-rebar/init" "" ""
 
 if test -n "${wrap_git_path}" ; then
   # derive a name from the path as a default
-  git_name="`echo "${wrap_git_path}" | perl -ne 'print $2 if m#(git|http|https)://.*/([^/.]*).git#'`-origin"
+  git_name="`echo "${wrap_git_path}" | perl -ne 'print $3 if m#(git|http|https)(://|@).*/([^/.]*).git#'`-origin"
   wrap_git_name=${wrap_git_name:-$git_name}
 fi
 
 if test -z "${wrap_git_path}" ; then
   for dir in .
     do
-      for x in rebar.config
+      for x in rebar.config rebar.config.script
         do
           fw_find "template/erlang-rebar/$dir/$x" file
           test -z "$file" && fatal "erlang-rebar/init"
@@ -100,6 +100,7 @@ else
     src \
     "test" \
     "rebar.config" \
+    "rebar.config.script" \
   || fatal "erlang-rebar/init"
 fi
 
