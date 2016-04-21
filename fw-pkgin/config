@@ -2,7 +2,7 @@
 # variable FW_PACKAGE_DEFAULT_MAINTAINER if non-empty at init time
 
 FW_PACKAGE_NAME="fw-template-erlang-rebar"
-FW_PACKAGE_VERSION="0.4.0"
+FW_PACKAGE_VERSION="0.4.1"
 FW_PACKAGE_MAINTAINER="Anthony Molinaro <anthonym@alumni.caltech.edu>"
 FW_PACKAGE_SHORT_DESCRIPTION="Erlang template for framewerk which uses rebar to build."
 FW_PACKAGE_DESCRIPTION="`cat README`"
@@ -14,7 +14,7 @@ FW_PACKAGE_ARCHITECTURE_DEPENDENT="0"
 # 
 # For other packaging systems, the syntax is translated for you.
 
-FW_PACKAGE_DEPENDS="framewerk (>= 0.9.3), rebar (>= 2.5.0.0), erlang (>= R15B-03.1)"
+FW_PACKAGE_DEPENDS="framewerk (>= 0.9.5), rebar (>= 2.5.0.0), erlang (>= R15B-03.1)"
 FW_PACKAGE_CONFLICTS=""
 FW_PACKAGE_PROVIDES=""
 FW_PACKAGE_REPLACES=""
