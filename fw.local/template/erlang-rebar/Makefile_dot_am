@@ -16,7 +16,7 @@ dist_erlappinclude_DATA = $(wildcard include/*.hrl)
 nobase_dist_erlappcsrc_DATA = $(shell if test -d c_src -o -h c_src ; then find c_src -follow -type f ; fi)
 nobase_dist_erlapppriv_DATA = $(shell if test -d priv -o -h priv ; then find priv -follow -type f ; fi)
 
-DIALYZERFLAGS := -I include/ $(DIALYZERFLAGS) 
+DIALYZERFLAGS := -I include/ $(FW_DIALYZERFLAGS) 
 
 rebar:
 	@ln -sf $(REBAR) rebar
@@ -71,6 +71,7 @@ endif
 	} && touch .generated_app_file
 
 maintainer-clean-local::
+	FW_REBAR_BUILD=1 ./rebar $(REBAR_OPTS) clean
 	@rm -f .generated_app_file
 	@rm -rf .eunit
 	if test -n "$(FW_WRAP_GITNAME)" ; then rm -rf $(FW_WRAP_GITNAME) ; fi

@@ -1,3 +1,6 @@
+Version 0.4.2 (molinaro)
+  * fixes for erlang 18
+
 Version 0.4.1 (molinaro)
   * fixes for Centos7
 
