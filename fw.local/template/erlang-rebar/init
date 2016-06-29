@@ -90,6 +90,26 @@ if test -z "${wrap_git_path}" ; then
         myapp.erl
       ) || fatal "erlang-rebar/init"
     done
+
+  for dir in include
+    do
+      mkdir "$dir" || fatal "erlang-rebar/init"
+      fw_exec "revision/$revision/add-dir" "$dir" || fatal "erlang-rebar/init"
+
+      for x in myapp.hrl
+        do
+          fw_find "template/erlang-rebar/$dir/$x" file
+          test -z "$file" || {
+            cp -f "$file" "$dir" || fatal "erlang-rebar/init"
+            chmod +w "$dir/$x" || fatal "erlang-rebar/init"
+          }
+        done
+      (
+        cd "$dir" &&                                              \
+        fw_exec "revision/$revision/add-files"                    \
+        myapp.hrl
+      ) || fatal "erlang-rebar/init"
+    done
 else
   fw_exec "revision/$revision/ignore-files" \
     "${wrap_git_name}" \

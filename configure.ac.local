@@ -2,6 +2,7 @@ dnl -- include additional autoconf commands here
 dnl -- do not include AC_OUTPUT, this is called for you
 
 AC_CONFIG_FILES([fw.local/m4/Makefile
+                 fw.local/template/erlang-rebar/include/Makefile
                  fw.local/template/erlang-rebar/src/Makefile])
 
 AC_PATH_PROG([GMAKE], [gmake], [make])

@@ -1,3 +1,6 @@
+Version 0.4.3 (molinaro)
+  * make dialyzer failing break builds
+
 Version 0.4.2 (molinaro)
   * fixes for erlang 18
 

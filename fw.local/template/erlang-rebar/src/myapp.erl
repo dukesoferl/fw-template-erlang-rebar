@@ -8,10 +8,12 @@
 %-=====================================================================-
 
 start (_Type, _Args) ->
-    register (hello_world, spawn_link (fun hello/0)).
+  Pid = spawn_link (fun hello/0),
+  true = register (hello_world, Pid),
+  {ok, Pid}.
 
 stop (_State) ->
-    ok.
+  ok.
 
 %-=====================================================================-
 %-                               Private                               -

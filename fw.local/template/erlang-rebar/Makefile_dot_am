@@ -24,19 +24,22 @@ rebar:
 all: .generated_app_file rebar
 	FW_REBAR_BUILD=1 ./rebar $(REBAR_OPTS) compile
 
-check: rebar
+.dialyzer_ok: $(wildcard src/*.erl) $(wildcard src/*.hrl) $(wildcard include/*.hrl)
 	@if test -z "$(NO_DIALYZE)" ; then \
 	  if test -z "$(SUPPORT_DIALYZE)" ; then \
 	    FW_REBAR_BUILD=1 ./rebar $(REBAR_OPTS) dialyze ; \
 	  else \
-	    dialyzer $(DIALYZERFLAGS) --src -c src ; \
+	    dialyzer $(DIALYZERFLAGS) --src -c src && touch .dialyzer_ok ; \
 	  fi ; \
-	fi ; \
+	fi
+
+check: rebar .dialyzer_ok
 	if test -z "$(NO_EUNIT)" ; then \
 	  FW_REBAR_BUILD=1 ./rebar $(REBAR_OPTS) eunit ; \
 	fi
 
 clean: rebar
+	@rm -f .dialyzer_ok
 	FW_REBAR_BUILD=1 ./rebar $(REBAR_OPTS) clean
 
 EXTRA_DIST += \
