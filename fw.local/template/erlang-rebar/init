@@ -126,6 +126,8 @@ fi
 
 fw_exec "revision/$revision/ignore-files" \
   rebar \
+  .rebar \
+  .dialyzer_ok \
   .generated_app_file \
   .eunit
 

@@ -1,3 +1,6 @@
+Version 0.4.5 (molinaro)
+  * ignore .dialyzer_ok and make sure it's removed by maintainer-clean
+
 Version 0.4.4 (molinaro)
   * git ignore was messed up
 

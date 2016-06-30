@@ -75,6 +75,7 @@ endif
 
 maintainer-clean-local::
 	FW_REBAR_BUILD=1 ./rebar $(REBAR_OPTS) clean
+	@rm -f .dialyzer_ok
 	@rm -f .generated_app_file
 	@rm -rf .eunit
 	if test -n "$(FW_WRAP_GITNAME)" ; then rm -rf $(FW_WRAP_GITNAME) ; fi
