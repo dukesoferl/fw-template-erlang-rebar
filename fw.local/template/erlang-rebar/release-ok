@@ -40,7 +40,7 @@ parse_args "erlang-rebar/release-ok" "$@"
 
 validate_args "erlang-rebar/release-ok" "" ""
 
-eval `fw_exec "template/erlang/load-config"`
+eval `fw_exec "template/erlang-rebar/load-config"`
 
 test $? = 0 || exit 1
 
