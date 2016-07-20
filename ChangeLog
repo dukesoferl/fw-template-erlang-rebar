@@ -1,3 +1,6 @@
+Version 0.4.7 (kenan.gillet)
+  * fix make check after make clean
+
 Version 0.4.6 (molinaro)
   * typo was maybe leading to the old erlang template being used sometimes
 
