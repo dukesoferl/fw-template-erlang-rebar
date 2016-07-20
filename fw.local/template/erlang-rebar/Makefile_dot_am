@@ -35,7 +35,7 @@ all: .generated_app_file rebar
 
 check: rebar .dialyzer_ok
 	if test -z "$(NO_EUNIT)" ; then \
-	  FW_REBAR_BUILD=1 ./rebar $(REBAR_OPTS) eunit ; \
+	  FW_REBAR_BUILD=1 ./rebar $(REBAR_OPTS) compile eunit ; \
 	fi
 
 clean: rebar
