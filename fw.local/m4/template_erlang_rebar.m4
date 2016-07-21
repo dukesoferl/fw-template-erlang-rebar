@@ -65,7 +65,7 @@ AC_DEFUN([FW_TEMPLATE_ERLANG_REBAR],
 
   AC_MSG_CHECKING([rebar supports dialyzer])
 
-  if $REBAR dialyze > /dev/null ; then
+  if $REBAR dialyze 2> /dev/null 1> /dev/null ; then
     AC_MSG_RESULT([yes])
   else
     SUPPORT_DIALYZE=1
