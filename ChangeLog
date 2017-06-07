@@ -1,3 +1,8 @@
+Version 0.4.8 (david hull)
+  * modify Makefile.am to allow check-local and clean-local rules to
+    be specified in Makefile.am.local
+  * 'make clean' runs 'make clean-am'
+
 Version 0.4.7 (kenan.gillet)
   * fix make check after make clean
   * fix rebar dialyzer check
