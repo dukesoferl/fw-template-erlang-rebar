@@ -33,12 +33,16 @@ all: .generated_app_file rebar
 	  fi ; \
 	fi
 
-check: rebar .dialyzer_ok
+.PHONY: check-local clean-local
+
+check: check-local
+
+check-local:: rebar .dialyzer_ok
 	if test -z "$(NO_EUNIT)" ; then \
 	  FW_REBAR_BUILD=1 ./rebar $(REBAR_OPTS) compile eunit ; \
 	fi
 
-clean: rebar
+clean: rebar clean-am clean-local
 	@rm -f .dialyzer_ok
 	FW_REBAR_BUILD=1 ./rebar $(REBAR_OPTS) clean
 
@@ -85,3 +89,5 @@ maintainer-clean-local::
 	  fi ; \
 	done
 	@if test -d ebin ; then rm -rf ebin ; fi
+
+clean-local::
