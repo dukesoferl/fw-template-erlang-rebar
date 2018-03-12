@@ -122,6 +122,18 @@ else
     "rebar.config" \
     "rebar.config.script" \
   || fatal "erlang-rebar/init"
+
+  # disable dialyzer and eunit for thirdparty packages
+  ( cat <<'EOD' >> configure.ac.local
+
+dnl Disable dialyzer as it's often broken for thirdparty projects
+NO_DIALYZE=1
+dnl Disable eunit as it's often broken for thirdparty projects
+NO_EUNIT=1
+EOD
+  ) || fatal "erlang-rebar/init"
+  # re-add some files so that they don't show up as unstaged in git
+  fw_exec "revision/$revision/add-files" configure.ac.local .gitignore
 fi
 
 fw_exec "revision/$revision/ignore-files" \
@@ -130,11 +142,6 @@ fw_exec "revision/$revision/ignore-files" \
   .dialyzer_ok \
   .generated_app_file \
   .eunit
-
-(
-  cd fw-pkgin &&
-  perl -i -pe 's/FW_PACKAGE_ARCHITECTURE_DEPENDENT="1"/FW_PACKAGE_ARCHITECTURE_DEPENDENT="0"/' config
-) || fatal "erlang-rebar/init"
 
 (
   cd fw-pkgin &&
@@ -208,4 +215,55 @@ if test -n "${wrap_git_path}" ; then
   echo "FW_WRAP_GITTAG=\"${wrap_git_tag}\"" >> config
 fi
 
+# if there is a tag it's probably got a version of either 
+if test -n "${wrap_git_tag}" ; then
+  # enforce a version made up of digits and dots with an optional v at the
+  # front
+  version="`echo "${wrap_git_tag}" | perl -ne 'print $1 if m#^v?([0-9\.]+)$#'`"
+
+  # if it's a valid version, use it as the framewerk version, otherwise
+  # just default to 0.0.0
+  if test -n "${version}" ; then
+    sed -i \
+      "s/FW_PACKAGE_VERSION=\"0.0.0\"/FW_PACKAGE_VERSION=\"${version}\"/" \
+      config
+  fi
+fi
+
+# if '--with_build_prefix 1' is a query arg to fw-init, add the magic to setup
+# the BUILD_PREFIX variable
+if test -n "${with_build_prefix}" ; then
+  sed -i \
+    "s/FW_PACKAGE_NAME=\"/ERLANG_VERSION=\$(erl -eval 'io:format(\"~s\", [ erlang:system_info(otp_release) ]), halt().'  -noshell)\nBUILD_PREFIX=erlang-\$(perl -e '\$ARGV[0] =~ m\/^(R?\\\d+[A-Z]*)\/i and print lc(\$1) or die \"\$ARGV[0]\";' \"\$ERLANG_VERSION\")-\n\nFW_PACKAGE_NAME=\"\${BUILD_PREFIX}/; s/# FW_ERL_APP_NAME=\"\"/FW_ERL_APP_NAME=\"$name\"/" \
+    config
+fi
+
+# if '--with_deps "dep1,dep2"' is a query arg to fw-init, add those to the
+# runtime dependency list
+if test -n "${with_deps}" ; then
+  if test -n "${with_build_prefix}" ; then
+    out_deps=`echo "$with_deps" | perl -pe 's/\s//g; s/^/\\\${BUILD_PREFIX}/; s/,/,\\\${BUILD_PREFIX}/g'`
+    with_deps=${out_deps}
+  fi
+  sed -i \
+    "s/FW_PACKAGE_DEPENDS=\"\"/FW_PACKAGE_DEPENDS=\"$with_deps\"/" \
+    config
+fi
+
+# if '--with_build_deps "dep1,dep2"' is a query arg to fw-init, add those to
+# the runtime dependency list
+if test -n "${with_build_deps}" ; then
+  if test -n "${with_build_prefix}" ; then
+    out_deps=`echo "$with_build_deps" | perl -pe 's/\s//g; s/^/\\\${BUILD_PREFIX}/; s/,/,\\\${BUILD_PREFIX}/g'`
+    with_build_deps=${out_deps}
+  fi
+  sed -i \
+    "s/FW_PACKAGE_BUILD_DEPENDS=\"\"/FW_PACKAGE_BUILD_DEPENDS=\"$with_deps\"/" \
+    config
+fi
+
+# add back files which may have changed
+fw_exec "revision/$revision/add-files" config .gitignore
 ) || fatal "erlang-rebar/init"
+
+

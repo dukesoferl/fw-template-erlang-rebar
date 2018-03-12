@@ -75,6 +75,7 @@ for dir in .
   do
     for x in Makefile_dot_am \
              configure.ac \
+             rebar.config \
              rebar.config.script
       do
         target=`echo "$x" | perl -pe 's/_dot_am/.am/;'`

@@ -1,3 +1,18 @@
+Version 0.5.0 (molinaro)
+  * default to being system dependent as we mostly install in /usr/lib64
+  * default to NO_DIALYZE and NO_EUNIT when it's a wrapped project
+  * add .xrl and .yrl files to dist
+  * when using wrap_git_tag if it looks like a version number use that as
+  the FW_PACKAGE_VERSION
+  * if a wrapped package doesn't have a rebar.config link the central one in
+  * support a --with_build_prefix argument to fw-init which if set to '1'
+  (or really anything), add the ${BUILD_PREFIX} magic
+  * support a --with_deps "dep1,dep2" argument which will add dependencies
+  to FW_PACKAGE_DEPENDS
+  * support a --with_build_deps "dep1,dep2" argument which will add
+  dependencies to FW_PACKAGE_BUILD_DEPENDS
+  * switch check to check-am so that reordering of directories works correctly
+
 Version 0.4.7 (kenan.gillet)
   * fix make check after make clean
   * fix rebar dialyzer check

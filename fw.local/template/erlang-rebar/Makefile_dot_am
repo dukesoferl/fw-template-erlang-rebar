@@ -10,7 +10,7 @@ erlappincludedir="$(erlappdir)/include"
 erlapptestdir="$(erlappdir)/test"
 erldocdir="@ERLDOCDIR@"
 
-dist_erlappsrc_DATA = $(wildcard src/*.erl) $(wildcard src/*.hrl)
+dist_erlappsrc_DATA = $(wildcard src/*.erl src/*.hrl src/*.xrl src/*.yrl)
 dist_erlappebin_DATA = $(wildcard ebin/*.beam) $(wildcard ebin/*.app)
 dist_erlappinclude_DATA = $(wildcard include/*.hrl)
 nobase_dist_erlappcsrc_DATA = $(shell if test -d c_src -o -h c_src ; then find c_src -follow -type f ; fi)
@@ -33,7 +33,7 @@ all: .generated_app_file rebar
 	  fi ; \
 	fi
 
-check: rebar .dialyzer_ok
+check-am: rebar .dialyzer_ok
 	if test -z "$(NO_EUNIT)" ; then \
 	  FW_REBAR_BUILD=1 ./rebar $(REBAR_OPTS) compile eunit ; \
 	fi
